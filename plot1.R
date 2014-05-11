@@ -1,0 +1,5 @@
+hpc <- read.table("household_power_consumption.txt", skip = 66637, nrow = 2880, sep = ";", colClasses="character", na.string="?", col.names = colnames(read.table("household_power_consumption.txt", nrow = 1, header = TRUE, sep=";")))
+hpc$newGAP <-as.numeric(hpc$Global_active_power)
+png(filename="plot1.png", width=480, height=480)
+with(hpc, hist(hpc$newGAP, main="Global Active Power", xlab="Global Active Power (kilowatts)", col="red"))
+dev.off()
