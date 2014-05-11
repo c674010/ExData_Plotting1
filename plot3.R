@@ -1,0 +1,15 @@
+hpc <- read.table("household_power_consumption.txt", skip = 66637, nrow = 2880, sep = ";", colClasses="character", na.string="?", col.names = colnames(read.table("household_power_consumption.txt", nrow = 1, header = TRUE, sep=";")))
+dfrm <-subset(hpc, select=c(Date, Time, Sub_metering_1, Sub_metering_2, Sub_metering_3))
+
+dfrm$Sub1 <-as.numeric(as.character(dfrm$Sub_metering_1))
+dfrm$Sub2 <-as.numeric(as.character(dfrm$Sub_metering_2))
+dfrm$Sub3 <-as.numeric(as.character(dfrm$Sub_metering_3))
+dfrm$date1 <-strptime(paste(dfrm$Date, dfrm$Time, sep=" "), format="%d/%m/%Y %H:%M:%S")
+dfrm$newdt <-weekdays(dfrm$date1, abbreviate=T)
+
+png(filename="plot3.png", width=480, height=480)
+with(dfrm, plot(date1, Sub1, ylab="Energy sub metering", xlab=" ", col="gray 55", type="l"))
+lines(dfrm$date1, dfrm$Sub2, type = "l", col = "red")
+lines(dfrm$date1, dfrm$Sub3, type = "l", col = "blue")
+legend("topright", c("Sub_metering_1","Sub_metering_2","Sub_metering_3"), lty=c(1,1,1), lwd=c(2.5,2.5), col=c("gray55","blue","red"))
+dev.off()
